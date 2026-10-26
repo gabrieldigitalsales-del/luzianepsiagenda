@@ -684,3 +684,5 @@ body{background:#edf4f8}
 .luz-dialog-buttons button{border-radius:0;border:1px solid #bfd5dd;background:white;color:#2c5565;padding:11px 18px;font-weight:700;cursor:pointer}
 .luz-dialog-buttons .luz-dialog-primary{background:#0799bd;color:#fff;border-color:#0799bd}
 @media(max-width:520px){.luz-dialog-panel{padding:22px}.luz-dialog-buttons button{flex:1}}
+
+.luz-password-form{display:grid;gap:14px}.luz-password-form p{margin:0;color:#537283;font-size:13px}.luz-password-form input{width:100%}.luz-password-actions{display:flex;justify-content:flex-end;gap:10px}.luz-password-actions button{border-radius:0;padding:11px 16px;cursor:pointer}.luz-password-error{color:#b12233!important}
