@@ -163,23 +163,19 @@ function AgendaApp({ onLogout }) {
 
   async function refresh() {
     setLoading(true)
-    if (hasSupabase) {
-      const [p, a, s, pay, packs] = await Promise.all([
-        supabase.from('luziane_reabilitar_2026_patients').select('*').order('created_at', { ascending: true }),
-        supabase.from('luziane_reabilitar_2026_appointments').select('*').order('appointment_date', { ascending: true }).order('appointment_time', { ascending: true }),
+    try {
+      const [p,a,st,pay,packs]=await Promise.all([
+        supabase.from('luziane_reabilitar_2026_patients').select('*').order('created_at',{ascending:true}),
+        supabase.from('luziane_reabilitar_2026_appointments').select('*').order('appointment_date',{ascending:true}).order('appointment_time',{ascending:true}),
         supabase.from('luziane_reabilitar_2026_settings').select('*').eq('id','main').maybeSingle(),
-        supabase.from('luziane_reabilitar_2026_payments').select('*').order('payment_date', {ascending: false}),
-        supabase.from('luziane_reabilitar_2026_packages').select('*').order('created_at', {ascending: false})
+        supabase.from('luziane_reabilitar_2026_payments').select('*').order('payment_date',{ascending:false}),
+        supabase.from('luziane_reabilitar_2026_packages').select('*').order('created_at',{ascending:false})
       ])
-      if (p.error) { console.error('Erro ao carregar pacientes:', p.error); setPatients(loadLocal('luziane_patients', seedPatients)) } else setPatients(p.data || [])
-      if (a.error) { console.error('Erro ao carregar consultas:', a.error); setAppointments(loadLocal('luziane_appointments', seedAppointments)) } else setAppointments(a.data || [])
-      if (!s.error && s.data) setSettings(s.data); else setSettings(loadLocal('luziane_settings', defaultSettings))
-      if (pay.error) { console.error('Erro nos pagamentos:',pay.error); setPayments([]) } else setPayments(pay.data || [])
-      if (packs.error) { console.error('Tabela de pacotes pendente:',packs.error);setPackages([]) } else setPackages(packs.data || [])
-    } else {
-      setPatients(loadLocal('luziane_patients', seedPatients)); setAppointments(loadLocal('luziane_appointments', seedAppointments)); setSettings(loadLocal('luziane_settings', defaultSettings)); setPayments(loadLocal('luziane_payments', seedPayments)); setPackages(loadLocal('luziane_packages', []))
-    }
-    setLoading(false)
+      for(const r of [p,a,st,pay,packs])if(r.error)throw new Error(r.error.message)
+      setPatients(p.data||[]);setAppointments(a.data||[]);setSettings(st.data||defaultSettings)
+      setPayments(pay.data||[]);setPackages(packs.data||[])
+    }catch(error){console.error('Erro na leitura da agenda',error);alert('Não foi possível acessar o banco: '+error.message)}
+    finally{setLoading(false)}
   }
   useEffect(() => { refresh() }, [])
 
