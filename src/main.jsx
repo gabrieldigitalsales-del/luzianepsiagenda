@@ -4,6 +4,36 @@ import { CalendarDays, Clock3, Edit3, LogOut, MapPin, Phone, Plus, Save, Search,
 import { hasSupabase, supabase } from './supabaseClient'
 import './styles.css'
 
+
+/** Janela modal interna. Não usa alert(), confirm() nem prompt() do navegador. */
+function customDialog(message,kind='notice',defaultValue=''){
+ return new Promise(resolve=>{
+   const host=document.createElement('div');host.className='luz-dialog-host';document.body.appendChild(host);
+   const root=createRoot(host);
+   const close=value=>{root.unmount();host.remove();resolve(value)};
+   function Dialog(){
+     const [value,setValue]=React.useState(defaultValue);
+     const isConfirm=kind==='confirm',isPrompt=kind==='prompt';
+     return <div className="luz-dialog-backdrop" role="presentation">
+       <section className="luz-dialog-panel" role="dialog" aria-modal="true" aria-label={isConfirm?'Confirmação':isPrompt?'Escolher opção':'Aviso'}>
+         <div className="luz-dialog-mark"><AlertTriangle size={22}/></div>
+         <h2>{isConfirm?'Confirmar ação':isPrompt?'Escolha uma opção':'Agenda Luziane'}</h2>
+         <p>{String(message)}</p>
+         {isPrompt&&<input autoFocus value={value} onChange={e=>setValue(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')close(value);if(e.key==='Escape')close(null)}}/>}
+         <div className="luz-dialog-buttons">
+           {(isConfirm||isPrompt)&&<button type="button" onClick={()=>close(isConfirm?false:null)}>Cancelar</button>}
+           <button type="button" className="luz-dialog-primary" autoFocus={!isPrompt} onClick={()=>close(isConfirm?true:isPrompt?value:undefined)}>{isConfirm?'Confirmar':isPrompt?'Continuar':'Entendi'}</button>
+         </div>
+       </section>
+     </div>
+   }
+   root.render(<Dialog/>);
+ });
+}
+const alert=message=>customDialog(message,'notice');
+const confirm=message=>customDialog(message,'confirm');
+const prompt=(message,value='')=>customDialog(message,'prompt',value);
+
 const today = new Date()
 const isoToday = toISODate(today)
 const seedPatients = []
@@ -196,7 +226,7 @@ function AgendaApp({ onLogout }) {
   }
   async function deletePackage(pkg){
     if(payments.some(p=>p.package_id===pkg.id)){alert('Este pacote tem recebimentos. Remova os recebimentos antes de excluir.');return}
-    if(!confirm('Excluir esta cobrança?'))return
+    if(!await confirm('Excluir esta cobrança?'))return
     if(hasSupabase){const {error}=await supabase.from('luziane_reabilitar_2026_packages').delete().eq('id',pkg.id);if(error){showSupabaseError('Erro ao excluir cobrança',error);return}await refresh()}
     else{const list=packages.filter(p=>p.id!==pkg.id);setPackages(list);saveLocal('luziane_packages',list)}
   }
@@ -220,7 +250,7 @@ function AgendaApp({ onLogout }) {
     setModal(null)
   }
   async function deletePayment(payment) {
-    if(!confirm('Excluir este recebimento?'))return
+    if(!await confirm('Excluir este recebimento?'))return
     if(hasSupabase){const {error}=await supabase.from('luziane_reabilitar_2026_payments').delete().eq('id',payment.id);if(error){showSupabaseError('Erro ao excluir pagamento',error);return}await refresh()}
     else {const list=payments.filter(p=>p.id!==payment.id);setPayments(list);saveLocal('luziane_payments',list)}
   }
@@ -241,7 +271,7 @@ function AgendaApp({ onLogout }) {
     setModal(null)
   }
   async function deletePatient(id) {
-    if (!confirm('Excluir paciente? As consultas dele serão mantidas sem vínculo.')) return
+    if (!await confirm('Excluir paciente? As consultas dele serão mantidas sem vínculo.')) return
     if (hasSupabase) { const { error } = await supabase.from('luziane_reabilitar_2026_patients').delete().eq('id', id); if (error) { alert('Não foi possível excluir o paciente: ' + error.message); return }; await refresh() }
     else { const list = patients.filter(p=>p.id!==id); const listA = appointments.map(a=>a.patient_id===id?{...a,patient_id:null}:a); setPatients(list); setAppointments(listA); saveLocal('luziane_patients', list); saveLocal('luziane_appointments', listA) }
   }
@@ -269,7 +299,7 @@ function AgendaApp({ onLogout }) {
     const conflicts = detectConflicts(records)
     if (conflicts.length) {
       const msg = conflicts.slice(0,5).map(c => `${formatDateBR(c.appointment_date)} às ${String(c.appointment_time).slice(0,5)}`).join('\n')
-      if (!confirm(`Já existe consulta nesse(s) horário(s):\n${msg}\n\nDeseja salvar mesmo assim?`)) return
+      if (!await confirm(`Já existe consulta nesse(s) horário(s):\n${msg}\n\nDeseja salvar mesmo assim?`)) return
     }
     if (hasSupabase) {
       const payloads = records.map(cleanForSupabase)
@@ -290,7 +320,7 @@ function AgendaApp({ onLogout }) {
     if (!item.recurrence_group_id || scope === 'one') return saveAppointment({ ...item, ...updateData })
     const targets = appointments.filter(a => a.recurrence_group_id === item.recurrence_group_id && (scope === 'future' ? a.appointment_date >= item.appointment_date : true))
     if (!targets.length) return saveAppointment({ ...item, ...updateData })
-    if (!confirm(`Alterar ${targets.length} consulta(s) desta recorrência?`)) return
+    if (!await confirm(`Alterar ${targets.length} consulta(s) desta recorrência?`)) return
     const changedDate = updateData.appointment_date && updateData.appointment_date !== item.appointment_date
     const changedTime = updateData.appointment_time && updateData.appointment_time !== item.appointment_time
     const updates = targets.map(t => ({
@@ -313,11 +343,11 @@ function AgendaApp({ onLogout }) {
   async function deleteAppointment(item) {
     let ids = [item.id]
     if (item.recurrence_group_id) {
-      const scope = prompt('Esta consulta faz parte de uma recorrência. Digite:\n1 = excluir apenas esta\n2 = esta e próximas\n3 = toda a sequência', '1')
+      const scope = await prompt('Esta consulta faz parte de uma recorrência. Digite:\n1 = excluir apenas esta\n2 = esta e próximas\n3 = toda a sequência', '1')
       if (scope === '2') ids = appointments.filter(a=>a.recurrence_group_id===item.recurrence_group_id && a.appointment_date >= item.appointment_date).map(a=>a.id)
       if (scope === '3') ids = appointments.filter(a=>a.recurrence_group_id===item.recurrence_group_id).map(a=>a.id)
     }
-    if (!confirm(`Excluir ${ids.length} consulta(s)?`)) return
+    if (!await confirm(`Excluir ${ids.length} consulta(s)?`)) return
     if (hasSupabase) { const { error } = await supabase.from('luziane_reabilitar_2026_appointments').delete().in('id', ids); if (error) { alert('Não foi possível excluir a consulta: ' + error.message); return }; await refresh() }
     else { const set = new Set(ids); const list = appointments.filter(a=>!set.has(a.id)); setAppointments(list); saveLocal('luziane_appointments', list) }
   }
