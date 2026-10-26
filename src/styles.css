@@ -1,0 +1,673 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#e9f7f8;
+  --bg-2:#f3fbfb;
+  --paper:#ffffff;
+  --paper-soft:#f5fcfc;
+  --ink:#103944;
+  --title:#087f98;
+  --muted:#527982;
+  --line:#b9e2e8;
+  --line-strong:#8acdd9;
+  --brown:#0796ad;
+  --brown-dark:#006d88;
+  --brown-soft:#d4f2f5;
+  --shadow:0 14px 35px rgba(0, 121, 146, .13);
+  --shadow-soft:0 7px 22px rgba(0, 121, 146, .09);
+  --green:#a4d333;
+  --green-bg:#eff8d1;
+  --blue:#09a7d0;
+  --blue-bg:#d9f4fc;
+  --yellow:#8f7200;
+  --yellow-bg:#fff3c6;
+  --red:#bf4a50;
+  --red-bg:#ffe5e7;
+  --nav-h:84px;
+  --sidebar-w:104px;
+}
+
+*{box-sizing:border-box}
+html{background:#074956}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+svg{display:block;flex:0 0 auto}
+
+.phone-app{min-height:100svh;width:100%;max-width:760px;margin:0 auto;background:var(--bg);padding-bottom:calc(var(--nav-h) + 18px);position:relative;overflow-x:hidden}
+.topbar{min-height:116px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.topbar h1,.brand-login{font-family:'Cormorant Garamond',serif;font-size:28px;line-height:1.18;letter-spacing:.105em;font-weight:500;color:var(--brown-dark);margin:0;text-transform:uppercase}
+.icon-only{border:0;background:transparent;color:#817872;padding:12px;border-radius:16px;transition:.2s ease}
+.icon-only:hover{background:var(--brown-soft);color:var(--brown-dark)}
+
+.screen{padding:32px 24px 18px;animation:fadeUp .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.page-title>span{display:block;font-size:15px;letter-spacing:.14em;color:#7d746e;font-weight:700;text-transform:uppercase;margin-bottom:9px}
+.page-title div{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.page-title h2,.month-head h2,.day-head h2,.settings-card h2,.modal h2{font-family:'Cormorant Garamond',serif;font-weight:500;color:var(--title)}
+.page-title h2{font-size:30px;line-height:1.03;margin:0 0 22px;letter-spacing:-.01em}
+
+.primary{background:linear-gradient(135deg,#05a7be,#007b99);color:#fff;border:0;border-radius:20px;box-shadow:0 10px 20px rgba(93,68,52,.22);font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:.2s ease}
+.primary:hover{transform:translateY(-1px);box-shadow:0 16px 28px rgba(93,68,52,.25)}
+.primary:active{transform:translateY(0)}
+.primary.wide{width:100%;min-height:58px;font-size:15.5px;padding:14px 20px}
+.primary.small{min-height:48px;border-radius:16px;padding:0 20px;font-size:15px;white-space:nowrap}
+.square{height:58px;border:0;border-radius:16px;background:linear-gradient(135deg,#05a7be,#007b99);color:#fff;box-shadow:var(--shadow-soft);display:grid;place-items:center;transition:.2s ease}
+.square:hover{transform:translateY(-1px)}
+.square svg{width:21px;height:21px}
+.ghost{min-height:52px;border:1px solid var(--line);background:#fff;border-radius:17px;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;color:var(--brown);margin:8px 0 22px;width:100%;box-shadow:0 5px 15px rgba(0,0,0,.04)}
+
+.cards-list{display:flex;flex-direction:column;gap:16px;margin-top:28px}
+.appointment-card,.patient-card,.settings-card,.calendar-card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-soft)}
+.appointment-card{padding:24px 22px;position:relative;overflow:hidden}
+.appointment-card:before,.patient-card:before,.settings-card:before{content:'';position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,var(--brown-soft),transparent);opacity:.75}
+.card-actions{position:absolute;right:18px;top:20px;display:flex;flex-direction:column;gap:18px}
+.card-actions button,.patient-actions button,.modal-head button{border:0;background:transparent;color:#817872;padding:8px;border-radius:14px;transition:.2s ease}
+.card-actions button:hover,.patient-actions button:hover,.modal-head button:hover{background:var(--brown-soft);color:var(--brown-dark)}
+.card-actions svg,.patient-actions svg{width:21px;height:21px}
+.time-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;min-width:0;flex-wrap:wrap}
+.time-row strong{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;color:#4d3930;line-height:1}
+.time-row span{display:flex;align-items:center;gap:6px;color:#7d746e;font-size:13px;white-space:nowrap}
+.appointment-card h3,.patient-card h3{font-size:20px;margin:0 88px 12px 0;line-height:1.2;color:#29231f}
+.meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:#817872;font-size:15.5px;margin-bottom:14px}
+.meta span,.phone-line{display:flex;align-items:center;gap:8px;min-width:0}
+.badges{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.badge{border-radius:999px;padding:6px 13px;font-weight:800;font-size:13px;border:2px solid transparent;line-height:1.1;white-space:nowrap}
+.badge.confirmada,.badge.ativo{background:var(--green-bg);color:#4ba58b;border-color:#b9e6d9}
+.badge.agendada,.badge.em_avaliacao{background:var(--blue-bg);color:#598ac0;border-color:#bfd9f0}
+.badge.pendente{background:var(--yellow-bg);color:var(--yellow);border-color:#f0dea7}
+.badge.pago{background:#e2f2e8;color:#57976e;border-color:#bfdfca}
+.badge.finalizado{background:#eee;color:#86807c;border-color:#d8d2cf}
+.badge.realizada{background:#e2f2e8;color:#57976e;border-color:#bfdfca}
+.badge.faltou,.badge.cancelada{background:var(--red-bg);color:var(--red);border-color:#ecc5bf}
+.price{font-size:15px;color:#817872;white-space:nowrap}
+.appointment-card p{font-size:15px;color:#817872;font-style:italic;margin:12px 0 0;line-height:1.4}
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:760px;width:100%;height:var(--nav-h);background:rgba(255,255,255,.98);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));z-index:40;box-shadow:0 -8px 24px rgba(62,48,40,.08)}
+.bottom-nav button{border:0;background:transparent;color:#7d746e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;line-height:1.05;position:relative;min-width:0;text-align:center;padding:12px 4px 10px;overflow:hidden}
+.bottom-nav button svg{width:23px;height:23px;margin:0 auto}
+.bottom-nav button span{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bottom-nav button.active{color:var(--brown);font-weight:800}
+.bottom-nav button.active:before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:44px;height:4px;border-radius:0 0 999px 999px;background:var(--brown)}
+
+.month-head{display:flex;align-items:center;justify-content:space-between;padding:2px 8px 24px}
+.month-head h2{font-size:28px;margin:0;text-align:center;line-height:1}
+.month-head button{background:transparent;border:0;color:#493a34;padding:10px;border-radius:14px}
+.month-head button:hover{background:var(--brown-soft)}
+.calendar-card{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;padding:24px 18px}
+.calendar-card b{text-align:center;color:#817872;font-size:15px;letter-spacing:.08em;padding:6px 0;text-transform:uppercase}
+.calendar-card button{height:54px;border:0;background:transparent;border-radius:16px;font-size:15.5px;position:relative;color:#2c2825;display:flex;align-items:center;justify-content:center;transition:.2s ease}
+.calendar-card button:hover{background:#f7f1ee}
+.calendar-card button.muted{color:#c7c1bd}
+.calendar-card button.selected{background:linear-gradient(135deg,#05a7be,#007b99);color:#fff;box-shadow:0 10px 20px rgba(85,58,43,.24)}
+.calendar-card i{display:flex;gap:5px;justify-content:center;position:absolute;bottom:7px;left:0;right:0}
+.calendar-card em{width:7px;height:7px;background:#b9aaa1;border-radius:999px;display:block}
+.calendar-card button.selected em{background:#fff}
+.day-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:30px}
+.day-head h2{font-size:26px;margin:0;line-height:1.05}
+.agenda-day{margin-top:30px}
+.empty{text-align:center;color:#817872;font-size:15.5px;padding:44px 0}
+
+.search-row{display:grid;grid-template-columns:1fr 78px;gap:16px;margin-bottom:40px}
+.search-row label{height:58px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-soft);border-radius:16px;display:flex;align-items:center;gap:18px;padding:0 26px;color:#817872;min-width:0}
+.search-row input{border:0;outline:0;background:transparent;font-size:17px;width:100%;min-width:0;color:#3d3733}
+.patient-card{position:relative;padding:22px 22px;overflow:hidden}
+.patient-main{display:flex;gap:16px;align-items:flex-start;min-width:0;max-width:calc(100% - 150px)}
+.patient-main h3{margin:0 0 14px;font-size:20px;min-width:0;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.patient-actions{position:absolute;right:15px;top:22px;display:flex;gap:12px}
+.patient-card p{font-size:13px;color:#817872;margin:16px 0 8px;line-height:1.35}
+.patient-card em{display:block;color:#817872;font-size:15px;margin-top:8px;line-height:1.35}
+.patient-card small{display:block;margin-top:12px;color:#aaa}
+.phone-line{font-size:15.5px;color:#817872}
+
+.settings-card{padding:32px 30px;margin-bottom:24px;position:relative;overflow:hidden}
+.settings-card h2{font-size:28px;margin:0 0 24px}
+.settings-card label,.modal label{display:flex;flex-direction:column;gap:13px;font-weight:800;font-size:15.5px;margin-bottom:24px;color:#2c2825}
+.settings-card input,.settings-card select,.modal input,.modal select,.modal textarea,.login-card input{width:100%;border:1px solid #ddd7d3;background:#fff;border-radius:17px;min-height:58px;padding:0 16px;font-size:15px;color:#2d2825;outline:none;box-shadow:0 2px 9px rgba(0,0,0,.04);transition:.18s ease}
+.settings-card input:focus,.settings-card select:focus,.modal input:focus,.modal select:focus,.modal textarea:focus,.login-card input:focus{border-color:#bda99d;box-shadow:0 0 0 4px rgba(127,96,75,.11)}
+.modal textarea{min-height:112px;padding-top:18px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tools button{min-height:52px;border:1px solid var(--line);background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;color:var(--brown);margin:10px 0;width:100%}
+
+.overlay{position:fixed;inset:0;background:rgba(38,29,24,.48);z-index:80;display:flex;align-items:flex-end;padding:0}
+.modal{background:var(--bg);border-radius:30px 30px 0 0;padding:22px 24px 30px;width:100%;max-width:760px;margin:0 auto;max-height:88svh;overflow:auto;box-shadow:0 -18px 50px rgba(0,0,0,.22)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:16px}
+.modal-head h2{font-size:30px;margin:0;line-height:1}
+
+.login-screen{min-height:100svh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at top,#fff 0,#f3ece8 54%,#e9ddd6 100%);padding:30px}
+.login-card{width:100%;max-width:430px;background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:36px}
+.brand-login{font-size:26px;margin-bottom:12px}
+.login-card p{color:#817872;font-size:15px;margin:0 0 20px}.login-card button{height:58px;width:100%;border:0;border-radius:16px;background:linear-gradient(135deg,#05a7be,#007b99);color:#fff;font-weight:800;font-size:15px;margin-top:18px;box-shadow:0 12px 24px rgba(93,68,52,.24)}
+.error{color:#b66a5f;display:block;margin-top:10px;font-weight:700}.loading{text-align:center;padding:60px;color:#817872}.screen::after{content:'';display:block;height:16px}
+
+@media (min-width: 900px){
+  body{background:linear-gradient(135deg,#efe5df 0%,#f8f2ef 45%,#fffaf6 100%)}
+  .phone-app{max-width:none;margin:0;min-height:100vh;padding:0 0 0 var(--sidebar-w);background:transparent}
+  .phone-app:before{content:'';position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 95% 8%,rgba(127,96,75,.12),transparent 28%),radial-gradient(circle at 3% 95%,rgba(127,96,75,.08),transparent 32%);z-index:-1}
+  .topbar{position:sticky;top:0;left:var(--sidebar-w);min-height:104px;padding:24px 54px;border-bottom:1px solid rgba(231,223,219,.86);box-shadow:0 8px 24px rgba(62,48,40,.04)}
+  .topbar h1{font-size:30px;line-height:1.08;letter-spacing:.13em}
+  .bottom-nav{left:0;top:0;bottom:0;transform:none;width:var(--sidebar-w);height:100vh;max-width:none;border-top:0;border-right:1px solid var(--line);grid-template-columns:1fr;grid-auto-rows:104px;background:rgba(255,255,255,.9);padding:118px 12px 24px;box-shadow:12px 0 30px rgba(62,48,40,.06)}
+  .bottom-nav:before{content:'L';position:absolute;top:26px;left:50%;transform:translateX(-50%);width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--brown),#5d4334);color:#fff;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:28px;box-shadow:0 12px 24px rgba(93,68,52,.22)}
+  .bottom-nav button{height:86px;border-radius:20px;gap:8px;font-size:13px;padding:12px 8px;overflow:visible}
+  .bottom-nav button:hover{background:#f4ece7;color:var(--brown-dark)}
+  .bottom-nav button svg{width:27px;height:27px}
+  .bottom-nav button.active{background:var(--brown-soft);box-shadow:inset 0 0 0 1px rgba(127,96,75,.09)}
+  .bottom-nav button.active:before{left:0;top:50%;transform:translateY(-50%);width:5px;height:42px;border-radius:0 999px 999px 0}
+  .screen{max-width:1180px;margin:0 auto;padding:48px 54px 58px}
+  .page-title{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:28px}
+  .page-title h2{font-size:52px;margin-bottom:0}
+  .page-title>span{font-size:15px;margin-bottom:10px}
+  .primary.wide{min-height:74px;font-size:17px}
+  .primary.small{min-height:58px;padding:0 28px}
+  .cards-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:32px}
+  .appointment-card{min-height:226px}
+  .meta{font-size:17px;gap:10px}
+  .time-row strong{font-size:28px}
+  .time-row span{font-size:15px}
+  .appointment-card h3,.patient-card h3{font-size:15px}
+  .calendar-card{padding:34px;gap:12px}
+  .calendar-card button{height:58px}
+  .month-head{max-width:800px;margin:0 auto;padding-bottom:32px}
+  .month-head h2{font-size:30px}
+  .day-head{margin-top:38px;padding:0 2px}
+  .day-head h2{font-size:38px}
+  .agenda-day .cards-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .search-row{grid-template-columns:minmax(320px,560px) 88px;margin-bottom:32px}
+  .search-row label,.square{height:76px}
+  .patient-main{max-width:calc(100% - 145px)}
+  .patient-main h3{max-width:270px}
+  .settings-card{max-width:900px;margin-left:0;margin-right:auto;padding:44px}
+  .settings-card.tools{max-width:900px}
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:end}
+  .tools h2{grid-column:1 / -1;margin-bottom:9px}
+  .tools button{margin:0}
+  .overlay{align-items:center;justify-content:center;padding:34px 34px 34px calc(var(--sidebar-w) + 34px)}
+  .modal{border-radius:30px;max-width:760px;box-shadow:0 25px 80px rgba(0,0,0,.25)}
+}
+
+@media (min-width: 1180px){
+  .cards-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .agenda-day .cards-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .screen{max-width:1320px}
+  .calendar-card{max-width:880px;margin:0 auto}
+}
+
+@media(max-width:520px){
+  :root{--nav-h:96px}
+  .topbar{min-height:126px;padding:22px 24px 16px}.topbar h1{font-size:30px}.screen{padding:40px 24px 20px}.page-title h2{font-size:28px}.page-title>span{font-size:17px}.primary.wide{min-height:58px;font-size:15px}.appointment-card h3{margin-right:92px}.calendar-card{gap:6px;padding:28px 18px}.calendar-card button{height:62px;font-size:15px}.calendar-card b{font-size:13px}.settings-card{padding:36px 30px}.two{gap:18px}.settings-card label,.modal label{font-size:15px}.settings-card input,.settings-card select,.modal input,.modal select,.modal textarea{font-size:17px}.patient-main h3{max-width:205px}.patient-actions{gap:8px}.bottom-nav button svg{width:27px;height:27px}
+}
+@media(max-width:390px){
+  .topbar h1{font-size:26px}.topbar{padding-left:18px;padding-right:18px}.screen{padding-left:18px;padding-right:18px}.page-title h2{font-size:35px}.page-title>span{font-size:15px}.primary.wide{min-height:76px;font-size:13px}.appointment-card{padding:26px 18px}.appointment-card h3{font-size:17px;margin-right:80px}.time-row strong{font-size:26px}.time-row span{font-size:17px}.meta{gap:10px;font-size:13px}.badge{font-size:12px;padding:7px 13px}.price{font-size:13px}.search-row{grid-template-columns:1fr 76px;gap:10px}.square,.search-row label{height:72px}.search-row label{padding:0 18px}.search-row input{font-size:15px}.patient-card{padding:26px 18px}.patient-actions{right:12px}.patient-main{max-width:calc(100% - 120px)}.patient-main h3{max-width:148px;font-size:17px}.settings-card{padding:28px 22px}.two{grid-template-columns:1fr}.bottom-nav{height:90px}.bottom-nav button{font-size:12px}.bottom-nav button svg{width:24px;height:24px}.calendar-card button{height:54px;font-size:15.5px}.month-head h2{font-size:28px}.day-head h2{font-size:28px}.primary.small{padding:0 18px;font-size:13px}.modal{padding:24px 20px 34px}.modal-head h2{font-size:26px}
+}
+@media print{.topbar,.bottom-nav,.primary,.card-actions,.search-row,.tools{display:none!important}.phone-app{padding:0;background:#fff}.screen{padding:20px}.appointment-card{break-inside:avoid}}
+
+
+/* Ajuste de escala solicitado: visual premium menos “zoomado” */
+@media (max-width: 899px){
+  .topbar{min-height:108px;padding:18px 22px 14px}
+  .topbar h1{font-size:26px;letter-spacing:.105em}
+  .screen{padding-top:28px}
+  .page-title>span{font-size:16px;margin-bottom:8px}
+  .page-title h2{font-size:34px;margin-bottom:20px}
+  .primary.wide{min-height:66px;font-size:18px;border-radius:18px}
+  .appointment-card{padding:22px 20px}
+  .time-row strong{font-size:28px}
+  .time-row span,.meta,.phone-line{font-size:15px}
+  .appointment-card h3,.patient-card h3{font-size:19px}
+  .appointment-card p,.patient-card em{font-size:14.5px}
+  .badge{font-size:12.5px;padding:6px 12px;border-width:1px}
+  .bottom-nav{height:82px}
+  .bottom-nav button{font-size:11.5px;gap:4px;padding-top:10px}
+  .bottom-nav button svg{width:22px;height:22px}
+  .calendar-card button{height:50px;font-size:18px}
+  .calendar-card b{font-size:13px}
+  .month-head h2{font-size:31px}
+  .day-head h2{font-size:25px}
+  .search-row label,.square{height:64px}
+  .search-row input{font-size:16px}
+  .settings-card{padding:28px 24px}
+  .settings-card h2{font-size:26px}
+  .settings-card label,.modal label{font-size:15px}
+  .settings-card input,.settings-card select,.modal input,.modal select,.modal textarea{font-size:16px;min-height:54px}
+}
+
+@media (min-width: 900px){
+  :root{--sidebar-w:96px}
+  .bottom-nav{width:96px;padding-left:10px;padding-right:10px}
+  .bottom-nav button{height:76px;font-size:12px}
+  .bottom-nav button svg{width:23px;height:23px}
+  .screen{padding-top:38px}
+  .page-title h2{font-size:44px}
+  .appointment-card{padding:24px 22px}
+  .calendar-card button{height:58px;font-size:18px}
+}
+
+/* Escala visual 50/100 — interface mais compacta, sem parecer zoom */
+:root{
+  --nav-h:74px;
+  --sidebar-w:88px;
+}
+
+.topbar{min-height:94px;padding:15px 20px 12px}
+.topbar h1,.brand-login{font-size:22px;line-height:1.12;letter-spacing:.10em}
+.icon-only{padding:9px;border-radius:13px}
+.icon-only svg{width:20px;height:20px}
+.screen{padding:24px 20px 12px}
+.page-title>span{font-size:12px;letter-spacing:.14em;margin-bottom:6px}
+.page-title h2{font-size:26px;line-height:1.02;margin-bottom:17px}
+.primary.wide{min-height:50px;font-size:14px;padding:11px 16px;border-radius:16px;gap:8px}
+.primary.small{min-height:40px;border-radius:14px;padding:0 16px;font-size:13px;gap:7px}
+.primary svg{width:18px;height:18px}
+.square{height:52px;border-radius:14px}
+.square svg{width:18px;height:18px}
+.ghost{min-height:46px;border-radius:14px;font-size:13px;margin:6px 0 16px}
+.cards-list{gap:12px;margin-top:20px}
+.appointment-card,.patient-card,.settings-card,.calendar-card{border-radius:17px}
+.appointment-card{padding:18px 18px}
+.card-actions{right:13px;top:14px;gap:12px}
+.card-actions button,.patient-actions button,.modal-head button{padding:6px;border-radius:11px}
+.card-actions svg,.patient-actions svg{width:18px;height:18px}
+.time-row{gap:7px;margin-bottom:9px}
+.time-row strong{font-size:23px}
+.time-row span{font-size:12px;gap:4px}
+.time-row span svg{width:16px;height:16px}
+.appointment-card h3,.patient-card h3{font-size:16px;margin:0 72px 9px 0}
+.meta{gap:7px;font-size:12.5px;margin-bottom:10px}
+.meta svg,.phone-line svg{width:15px;height:15px}
+.badges{gap:7px}
+.badge{font-size:11px;padding:5px 10px;border-width:1px}
+.price{font-size:12.5px}
+.appointment-card p{font-size:12.5px;margin-top:9px}
+.bottom-nav{height:var(--nav-h)}
+.bottom-nav button{font-size:10.5px;gap:3px;padding:9px 3px 8px}
+.bottom-nav button svg{width:19px;height:19px}
+.bottom-nav button.active:before{width:36px;height:3px}
+.month-head{padding:0 6px 18px}
+.month-head h2{font-size:24px}
+.month-head button{padding:7px;border-radius:11px}
+.month-head button svg{width:19px;height:19px}
+.calendar-card{gap:5px;padding:18px 14px}
+.calendar-card b{font-size:11.5px;padding:4px 0}
+.calendar-card button{height:43px;border-radius:13px;font-size:13px}
+.calendar-card i{gap:3px;bottom:5px}
+.calendar-card em{width:5px;height:5px}
+.day-head{gap:12px;margin-top:22px}
+.day-head h2{font-size:22px}
+.agenda-day{margin-top:22px}
+.empty{font-size:13.5px;padding:34px 0}
+.search-row{grid-template-columns:1fr 58px;gap:10px;margin-bottom:28px}
+.search-row label{height:52px;border-radius:14px;gap:11px;padding:0 16px}
+.search-row label svg{width:18px;height:18px}
+.search-row input{font-size:14px}
+.patient-card{padding:18px 18px}
+.patient-main{gap:10px;max-width:calc(100% - 118px)}
+.patient-main h3{font-size:16px;margin:0 0 10px;max-width:170px}
+.patient-actions{right:12px;top:16px;gap:7px}
+.patient-card p{font-size:11.5px;margin:11px 0 6px}
+.patient-card em{font-size:12.5px;margin-top:6px}
+.phone-line{font-size:12.5px}
+.settings-card{padding:24px 20px;margin-bottom:18px}
+.settings-card h2{font-size:23px;margin-bottom:18px}
+.settings-card label,.modal label{gap:9px;font-size:13px;margin-bottom:18px}
+.settings-card input,.settings-card select,.modal input,.modal select,.modal textarea,.login-card input{min-height:48px;border-radius:14px;padding:0 13px;font-size:13.5px}
+.modal textarea{min-height:92px;padding-top:13px}
+.two{gap:11px}
+.tools button{min-height:46px;border-radius:14px;font-size:13px;margin:8px 0}
+.overlay{background:rgba(38,29,24,.45)}
+.modal{border-radius:24px 24px 0 0;padding:18px 20px 24px;max-height:88svh}
+.modal-head{margin-bottom:17px}
+.modal-head h2{font-size:24px}
+.login-card{max-width:390px;border-radius:24px;padding:28px}
+.login-card p{font-size:13px;margin-bottom:16px}
+.login-card button{height:50px;border-radius:14px;font-size:14px}
+
+@media (max-width:520px){
+  :root{--nav-h:74px}
+  .topbar{min-height:94px;padding:15px 20px 12px}
+  .topbar h1{font-size:22px}
+  .screen{padding:24px 20px 12px}
+  .page-title>span{font-size:12px}
+  .page-title h2{font-size:26px}
+  .primary.wide{min-height:50px;font-size:14px}
+  .calendar-card{gap:5px;padding:18px 14px}
+  .calendar-card button{height:43px;font-size:13px}
+  .calendar-card b{font-size:11.5px}
+  .settings-card{padding:24px 20px}
+  .settings-card input,.settings-card select,.modal input,.modal select,.modal textarea{font-size:13.5px}
+  .bottom-nav button svg{width:19px;height:19px}
+}
+
+@media(max-width:390px){
+  .topbar{padding-left:16px;padding-right:16px;min-height:88px}
+  .topbar h1{font-size:20px}
+  .screen{padding-left:16px;padding-right:16px;padding-top:22px}
+  .page-title h2{font-size:24px}
+  .primary.wide{min-height:48px;font-size:13px}
+  .appointment-card{padding:17px 16px}
+  .appointment-card h3{font-size:15px;margin-right:70px}
+  .time-row strong{font-size:21px}
+  .time-row span{font-size:12px}
+  .meta{gap:7px;font-size:12px}
+  .badge{font-size:10.5px;padding:4px 9px}
+  .price{font-size:12px}
+  .search-row{grid-template-columns:1fr 54px;gap:8px}
+  .square,.search-row label{height:50px}
+  .search-row label{padding:0 14px}
+  .search-row input{font-size:13px}
+  .patient-card{padding:17px 16px}
+  .patient-main{max-width:calc(100% - 106px)}
+  .patient-main h3{max-width:130px;font-size:15px}
+  .bottom-nav{height:72px}
+  .bottom-nav button{font-size:10px}
+  .bottom-nav button svg{width:18px;height:18px}
+  .calendar-card button{height:39px;font-size:12.5px}
+  .month-head h2{font-size:22px}
+  .day-head h2{font-size:21px}
+  .primary.small{min-height:38px;padding:0 13px;font-size:12px}
+  .modal-head h2{font-size:22px}
+}
+
+@media (min-width: 900px){
+  :root{--sidebar-w:88px}
+  .phone-app{padding-left:var(--sidebar-w)}
+  .topbar{min-height:86px;padding:18px 42px;left:var(--sidebar-w)}
+  .topbar h1{font-size:23px;letter-spacing:.12em}
+  .bottom-nav{width:var(--sidebar-w);padding:100px 9px 20px;grid-auto-rows:74px}
+  .bottom-nav:before{top:22px;width:46px;height:46px;border-radius:14px;font-size:24px}
+  .bottom-nav button{height:64px;border-radius:16px;font-size:10.5px;gap:6px;padding:9px 6px}
+  .bottom-nav button svg{width:21px;height:21px}
+  .bottom-nav button.active:before{width:4px;height:34px}
+  .screen{padding:34px 42px 44px;max-width:1160px}
+  .page-title{gap:22px;margin-bottom:22px}
+  .page-title>span{font-size:12px;margin-bottom:7px}
+  .page-title h2{font-size:36px}
+  .primary.wide{min-height:54px;font-size:14px}
+  .primary.small{min-height:42px;padding:0 18px;font-size:13px}
+  .cards-list{gap:14px;margin-top:24px}
+  .appointment-card{min-height:180px;padding:19px 18px}
+  .appointment-card h3,.patient-card h3{font-size:16px}
+  .meta{font-size:13px;gap:7px}
+  .time-row strong{font-size:23px}
+  .time-row span{font-size:12px}
+  .calendar-card{padding:26px;gap:9px;max-width:780px}
+  .calendar-card button{height:48px;font-size:13.5px}
+  .month-head{max-width:780px;padding-bottom:24px}
+  .month-head h2{font-size:25px}
+  .day-head{margin-top:30px}
+  .day-head h2{font-size:30px}
+  .search-row{grid-template-columns:minmax(280px,500px) 64px;margin-bottom:26px}
+  .search-row label,.square{height:56px}
+  .patient-main h3{max-width:230px}
+  .settings-card{max-width:820px;padding:34px}
+  .settings-card h2{font-size:26px}
+  .tools{gap:14px}
+  .overlay{padding:28px 28px 28px calc(var(--sidebar-w) + 28px)}
+  .modal{border-radius:24px;max-width:680px}
+}
+
+@media (min-width:1180px){
+  .screen{max-width:1220px}
+  .calendar-card{max-width:800px}
+}
+
+.connection-pill{
+  margin:12px 24px 0;
+  padding:9px 13px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.02em;
+  display:inline-flex;
+  align-items:center;
+  max-width:calc(100% - 48px);
+  border:1px solid var(--line);
+  background:#fff;
+  color:#756960;
+  box-shadow:0 4px 12px rgba(62,48,40,.05);
+}
+.connection-pill.online{background:#e7f6ef;color:#4a8e72;border-color:#c5e7d7}
+.connection-pill.local{background:#fff4d9;color:#9b6e16;border-color:#efd99b}
+@media (min-width:900px){.connection-pill{margin-left:54px;margin-top:18px}}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 16px}
+.stats-row div{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:20px;padding:14px 12px;box-shadow:0 10px 24px rgba(62,48,40,.06)}
+.stats-row b{display:block;font-size:21px;color:var(--accent);line-height:1}
+.stats-row span{display:block;font-size:11px;color:var(--muted);font-weight:800;margin-top:6px;text-transform:uppercase;letter-spacing:.04em}
+.soft-alert{display:flex;align-items:center;gap:8px;background:#fff8e7;border:1px solid #ead7a5;color:#836119;border-radius:18px;padding:12px 14px;margin:12px 0 14px;font-size:13px;box-shadow:0 8px 20px rgba(120,80,20,.06)}
+.pending-line{font-size:13px;color:var(--text);padding:8px 0;border-bottom:1px solid rgba(85,60,45,.08)}
+.quick-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.whatsapp-btn{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#2d7c5f;background:#e7f6ef;border:1px solid #c5e7d7;border-radius:999px;padding:8px 12px;font-weight:900;font-size:12px}
+.badge.recorrente{background:#ede7ff;color:#6f55a6;border-color:#d8ccff;display:inline-flex;align-items:center;gap:5px}
+.recurrence-box{background:#f8f3ef;border:1px dashed rgba(128,92,65,.28);border-radius:18px;padding:14px;margin:8px 0 12px}
+.recurrence-box h3{margin:0 0 10px;font-size:14px;display:flex;align-items:center;gap:8px;color:var(--accent)}
+.history-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}
+.history-grid span{background:#fbf7f3;border:1px solid rgba(85,60,45,.08);border-radius:14px;padding:9px 10px;font-size:11px;color:var(--muted);font-weight:800}
+.history-grid b{color:var(--accent);font-size:16px;margin-right:3px}
+.patient-card small{display:block;color:var(--muted);font-weight:800;margin-top:7px}
+@media (min-width:900px){.stats-row{max-width:820px;gap:14px}.stats-row div{padding:18px}.stats-row b{font-size:28px}.stats-row span{font-size:12px}.soft-alert{max-width:820px}.history-grid{grid-template-columns:repeat(4,1fr)}}
+
+/* Ajustes finos solicitados — tela Hoje e espaçamento dos pacientes */
+.today-screen .page-title h2{margin-bottom:14px}
+.today-hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  background:linear-gradient(135deg,rgba(255,255,255,.98),#fff8f3);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px 16px;
+  box-shadow:var(--shadow-soft);
+  margin:0 0 14px;
+  position:relative;
+  overflow:hidden;
+}
+.today-hero:before{content:'';position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,var(--brown-soft),transparent)}
+.today-hero span{display:block;font-size:10.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.today-hero h3{margin:0;color:var(--title);font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;line-height:1.05}
+.today-hero p{margin:5px 0 0;color:var(--muted);font-size:12.5px;font-weight:700;line-height:1.35}
+.today-hero .primary{min-height:42px;border-radius:14px;padding:0 14px;font-size:12.5px;white-space:nowrap}
+.section-label{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:20px 0 -6px}
+.today-list{margin-top:14px}
+.pending-card{margin-top:18px}
+.patient-card small{
+  display:block;
+  margin-top:16px;
+  padding-top:12px;
+  border-top:1px solid rgba(85,60,45,.09);
+  color:var(--brown);
+  background:#fbf7f3;
+  border-radius:13px;
+  padding:11px 12px;
+  font-weight:900;
+  line-height:1.35;
+}
+.patient-card .quick-row{margin-top:14px}
+.appointment-card .meta{margin-bottom:12px}
+
+@media(max-width:430px){
+  .today-hero{align-items:stretch;flex-direction:column;padding:15px}
+  .today-hero .primary{width:100%;min-height:44px}
+}
+@media(min-width:900px){
+  .today-hero{max-width:820px;padding:20px 22px;margin-bottom:18px}
+  .today-hero h3{font-size:30px}
+  .today-hero p{font-size:13.5px}
+  .today-hero .primary{min-height:48px;padding:0 18px;font-size:13px}
+  .section-label{margin-top:26px}
+}
+
+.form-hint {
+  margin: -6px 0 12px;
+  font-size: 0.86rem;
+  color: #6b7280;
+}
+
+/* Dashboard financeiro */
+.finance-filters{
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:10px;
+  align-items:end;
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:var(--shadow-soft);
+  padding:14px;
+  margin-bottom:16px;
+}
+.finance-filters label{display:flex;flex-direction:column;gap:7px;font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.finance-filters select{height:42px;border:1px solid var(--line);background:#fff;border-radius:13px;padding:0 12px;color:var(--ink);font-weight:800;outline:0}
+.finance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 18px}
+.finance-card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-soft);padding:16px;position:relative;overflow:hidden}
+.finance-card:before{content:'';position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,var(--brown-soft),transparent)}
+.finance-card div{width:34px;height:34px;border-radius:12px;background:var(--brown-soft);color:var(--brown);display:grid;place-items:center;margin-bottom:10px}
+.finance-card svg{width:18px;height:18px}
+.finance-card span{display:block;font-size:10.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.finance-card b{display:block;font-size:19px;color:var(--title);line-height:1.05}
+.finance-card p{margin:7px 0 0;color:var(--muted);font-size:12px;font-weight:700;line-height:1.3}
+.finance-summary h2,.finance-list h2{margin-bottom:14px}
+.month-line{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(85,60,45,.08)}
+.month-line:last-child{border-bottom:0}
+.month-line b{display:block;color:var(--ink);font-size:13px}
+.month-line span{display:block;color:var(--muted);font-size:11px;font-weight:800;margin-top:3px}
+.month-line strong{color:#4a8e72;font-size:13px;white-space:nowrap}
+.month-line em{font-style:normal;color:var(--yellow);font-size:12px;font-weight:900;white-space:nowrap}
+.finance-row{width:100%;border:1px solid rgba(85,60,45,.09);background:#fff;border-radius:15px;padding:12px;margin:8px 0;display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;text-align:left;transition:.2s ease}
+.finance-row:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(62,48,40,.07)}
+.finance-row div{min-width:0}
+.finance-row b{display:block;font-size:13px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.finance-row span{display:block;font-size:11px;color:var(--muted);font-weight:800;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.finance-row strong{font-size:13px;color:var(--brown);white-space:nowrap}
+@media(max-width:520px){
+  .finance-filters{grid-template-columns:1fr;align-items:stretch}
+  .finance-filters .primary{width:100%}
+  .finance-row{grid-template-columns:1fr auto;gap:8px}
+  .finance-row .badge{grid-column:1 / -1;width:max-content}
+  .month-line{grid-template-columns:1fr auto;gap:8px}.month-line em{grid-column:1 / -1}
+}
+@media(min-width:900px){
+  .finance-filters{max-width:920px;grid-template-columns:240px 220px auto;padding:18px;gap:14px}
+  .finance-grid{grid-template-columns:repeat(4,minmax(0,1fr));max-width:920px;gap:14px}
+  .finance-card{padding:20px}.finance-card b{font-size:22px}
+  .finance-summary,.finance-list{max-width:920px}
+}
+
+/* Campos novos, integrados ao layout original */
+.form-section{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--title);margin:20px 0 8px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.payment-history-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.payment-history-row>div:first-child{display:grid;gap:5px}.payment-history-row span{font-size:12px;color:var(--muted)}
+.payment-history-actions{display:flex;gap:4px}.payment-history-actions button{background:transparent;color:var(--brown);border:1px solid var(--line);border-radius:8px;padding:8px}
+.payment-shortcut{font-size:12px;color:var(--brown);font-weight:700;white-space:nowrap;padding:9px;border:1px solid var(--line);border-radius:8px}
+.finance-filters{flex-wrap:wrap}
+
+/* Identidade visual Reabilitar — mantendo os componentes e o layout do projeto original */
+.topbar{background:#0795a9;border-bottom:3px solid #a4d333;color:#fff;min-height:120px}
+.topbar h1{color:#fff;font-family:Inter,system-ui,sans-serif;font-size:17px;letter-spacing:.035em;font-weight:800;line-height:1.35}
+.topbar .icon-only{color:#fff}
+.topbar .icon-only:hover{background:rgba(255,255,255,.15);color:#fff}
+.reabilitar-header-brand{display:flex;align-items:center;gap:13px;min-width:0}
+.reabilitar-header-brand img{width:98px;height:79px;object-fit:contain;background:#0795a9;mix-blend-mode:normal}
+.login-screen{background:linear-gradient(155deg,#008ca2,#02a7bf 58%,#00677f)}
+.login-card{border-top:6px solid #a4d333}
+.login-brand-img{display:block;width:min(260px,85%);height:auto;margin:0 auto 14px;border-radius:6px}
+.login-card .brand-login{color:#007f99;letter-spacing:.045em;font-family:Inter,system-ui,sans-serif;font-size:19px;font-weight:800}
+.primary,.square{box-shadow:0 10px 22px rgba(0,121,146,.21)}
+.bottom-nav button.active{color:#008da8}
+.bottom-nav button.active:before{background:#a4d333}
+.appointment-card:before,.patient-card:before,.settings-card:before{background:linear-gradient(90deg,#05a8c2,#a4d333)}
+.page-title>span{color:#008ea6}
+.page-title h2,.month-head h2,.day-head h2,.settings-card h2,.modal h2{color:#076f83}
+@media(max-width:430px){.reabilitar-header-brand img{width:77px;height:70px}.topbar h1{font-size:14px}}
+
+/* Cobranças por avaliação / pacote mantendo o tema original */
+.package-record {display:flex;gap:16px;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid rgba(20,60,65,.15)}
+.package-record-details {display:flex;flex-direction:column;gap:5px;min-width:0}
+.package-record-details span {font-size:13px;color:var(--muted, #49616a)}
+.package-record-details b {font-size:15px}
+.finance-filters {flex-wrap:wrap}
+
+/* Reabilitar V6 — fundo frio (sem beges ou marrons) */
+:root {
+  --bg:#edf4f8;--bg-2:#f4f9fc;--paper:#fff;--paper-soft:#f8fcff;
+  --ink:#143747;--title:#066e87;--muted:#607b89;
+  --line:#d5e6ed;--line-strong:#a6cedd;
+  --brown:#008fa9;--brown-dark:#006a86;--brown-soft:#e1f5f9;
+  --shadow:0 14px 35px rgba(17,70,98,.09);--shadow-soft:0 7px 22px rgba(17,70,98,.06)
+}
+html{background:#e5f1f6}
+body{background:#edf4f8}
+.phone-app{background:#edf4f8}
+.page-title>span,.meta,.price,.appointment-card p,.empty,.bottom-nav button,.calendar-card b,.time-row span{color:#607b89}
+.time-row strong,.month-head button,.calendar-card button{color:#183d4c}
+.appointment-card h3,.patient-card h3{color:#123849}
+.settings-card input,.settings-card select,.modal input,.modal select,.modal textarea,.login-card input{border-color:#cbdde6;color:#153848}
+.settings-card input:focus,.settings-card select:focus,.modal input:focus,.modal select:focus,.modal textarea:focus,.login-card input:focus{border-color:#05a4c1;box-shadow:0 0 0 4px rgba(3,163,191,.12)}
+.calendar-card button:hover,.bottom-nav button:hover{background:#e0f4fa;color:#007e9d}
+.calendar-card button.muted{color:#adc0c9}
+.calendar-card em{background:#a5bfcb}
+.login-screen{background:linear-gradient(150deg,#054b70 0%,#057ea0 54%,#009bb2 100%)}
+.login-card{background:#fff;border-color:#c9e6ed}
+.login-card p,.loading{color:#587585}
+.recurrence-box,.history-grid span{background:#f0f8fc;border-color:#cbe3ec;color:#436b7a}
+@media(min-width:900px){
+  body{background:linear-gradient(145deg,#e9f2f8 0%,#f7fbff 54%,#e8f4f8 100%)}
+  .phone-app:before{background:radial-gradient(circle at 95% 8%,rgba(5,154,185,.08),transparent 28%),radial-gradient(circle at 3% 95%,rgba(16,83,126,.055),transparent 32%)}
+  .topbar{border-bottom-color:#cde4eb;box-shadow:0 8px 24px rgba(20,65,96,.04)}
+  .bottom-nav{box-shadow:12px 0 30px rgba(22,73,99,.055)}
+  .bottom-nav:before{background:linear-gradient(135deg,#00a8c5,#006986);box-shadow:0 12px 24px rgba(0,118,151,.17)}
+  .bottom-nav button:hover{background:#e9f6fa}
+  .bottom-nav button.active{box-shadow:inset 0 0 0 1px #c5e8ed}
+}
+/* Entrada / carregamento com assinatura NEXOR */
+.splash-screen{position:fixed;inset:0;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:radial-gradient(circle at 50% 10%,#0d8caf 0%,#075979 48%,#063b57 100%);color:#fff;z-index:9999;overflow:hidden}
+.splash-screen:before{content:'';position:absolute;width:65vmin;height:65vmin;border:1px solid rgba(255,255,255,.13);border-radius:50%;top:-38vmin;right:-25vmin}
+.splash-accent{position:absolute;left:0;right:0;top:0;height:6px;background:#abd535}
+.splash-center{width:min(100%,385px);display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.splash-logo-frame{width:190px;height:152px;display:flex;align-items:center;justify-content:center;margin-bottom:28px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);box-shadow:0 20px 55px rgba(0,35,59,.22)}
+.splash-logo-frame img{width:100%;height:100%;object-fit:contain}
+.splash-title{font-weight:800;font-size:clamp(18px,4vw,24px);letter-spacing:.08em;line-height:1.25}
+.splash-subtitle{margin-top:8px;font-size:12px;font-weight:700;letter-spacing:.25em;color:#bde8f0}
+.splash-divider{width:56px;height:3px;background:#abd535;margin:28px auto 10px}
+.splash-center p{color:#d8edf4;font-size:13px;letter-spacing:.025em;margin:17px 0 14px}
+.splash-progress-track{height:7px;width:100%;background:rgba(255,255,255,.19);overflow:hidden}
+.splash-progress-fill{height:100%;background:linear-gradient(90deg,#a9d132,#d4eb78);transition:width .09s linear}
+.splash-percentage{align-self:flex-end;margin-top:9px;font-weight:800;font-size:13px;color:#d7edf5;font-variant-numeric:tabular-nums}
+.splash-credit{position:absolute;bottom:clamp(28px,6vh,60px);font-size:11px;letter-spacing:.17em;color:#c3dfe9}
+.splash-credit strong{color:#fff;font-size:13px;letter-spacing:.13em;margin-left:5px}
+@media(max-width:430px){.splash-logo-frame{width:158px;height:130px}}
+
+/* NEXOR V10: cantos retos para toda a interface. */
+*, *::before, *::after { border-radius: 0 !important; }
+
+/* Financeiro V11 — folhas individuais */
+.reabilitar-financial-panel{margin-bottom:18px}
+.financial-header h2{margin:0 0 4px}
+.financial-header p{margin:0 0 18px;color:#647e8b;font-size:13px}
+.financial-periods{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.financial-periods button{padding:9px 15px;background:#e8f1f6;color:#22586e;border:1px solid #cbdfe9;border-radius:0;font-weight:700;cursor:pointer}
+.financial-periods button.active{background:#007e9d;color:#fff;border-color:#007e9d}
+.financial-filter-row{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin-bottom:16px}
+.financial-filter-row label{min-width:200px;flex:1}
+.financial-filter-row input,.financial-filter-row select{width:100%}
+.financial-search{display:block;max-width:400px;margin-bottom:16px}
+.financial-search input{width:100%}
+.patient-ledger{background:white;border:1px solid #cbdfe9;padding:20px;margin:14px 0;border-radius:0}
+.patient-ledger-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}
+.patient-ledger-title h3{margin:0;color:#06465b}
+.patient-ledger-title span{font-size:12px;color:#647e8b}
+.patient-ledger-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.patient-ledger-values>div{padding:14px 12px;background:#eff6fa;border:1px solid #dcecf3}
+.patient-ledger-values small{display:block;color:#647e8b;font-size:10px;font-weight:800;letter-spacing:.05em;margin-bottom:6px}
+.patient-ledger-values strong{font-size:clamp(15px,2vw,24px);display:block;overflow-wrap:anywhere}
+.positive-value{color:#118361!important}
+.negative-value{color:#c42f48!important}
+.ledger-progress{height:9px;background:#dbe6ec;margin:14px 0 17px}
+.ledger-progress div{height:100%;background:#139f77}
+.ledger-line{display:grid;grid-template-columns:minmax(125px,2fr) repeat(3,minmax(80px,1fr)) auto;gap:12px;align-items:center;border-top:1px solid #e0eaf0;padding:12px 0;font-size:13px}
+.ledger-line small{display:block;color:#69808c;margin-top:4px}
+.ledger-line span,.ledger-line strong{text-align:right}
+.ledger-empty{font-size:13px;color:#647e8b}
+.ledger-payment-history{padding-top:12px;border-top:1px solid #dbe7ed}
+.ledger-payment-history h4{margin:6px 0 12px}
+@media(max-width:640px){.patient-ledger-values{gap:5px}.patient-ledger-values>div{padding:10px 7px}.patient-ledger-values small{font-size:9px}.ledger-line{grid-template-columns:1fr 1fr;gap:8px}.ledger-line span,.ledger-line strong{text-align:left}.ledger-line .payment-history-actions{justify-content:flex-end}.financial-filter-row label{min-width:130px}}
