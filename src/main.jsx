@@ -546,7 +546,7 @@ function ChangePasswordModal({onClose}){
  const [saving,setSaving]=useState(false)
  async function submit(e){
    e.preventDefault();setMessage('')
-   if(newPassword.length<8){setMessage('A nova senha precisa ter pelo menos 8 caracteres.');return}
+   if(newPassword.length===0){setMessage('Digite a nova senha.');return}
    if(newPassword!==confirmPassword){setMessage('As senhas informadas não coincidem.');return}
    setSaving(true)
    try{
@@ -557,16 +557,16 @@ function ChangePasswordModal({onClose}){
    }catch(e){setMessage('Não foi possível conectar ao servidor.')}
    finally{setSaving(false)}
  }
- return <Modal title="Alterar senha de acesso" onClose={onClose}>
+ return <div className="luz-password-dialog"><Modal title="Alterar senha de acesso" onClose={onClose}>
    <form className="luz-password-form" onSubmit={submit}>
      <p>Confirme sua senha atual para proteger o acesso à agenda.</p>
      <label>Senha atual<input type="password" required autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>
-     <label>Nova senha<input type="password" required minLength={8} autoComplete="new-password" value={newPassword} onChange={e=>setNewPassword(e.target.value)}/></label>
-     <label>Confirmar nova senha<input type="password" required minLength={8} autoComplete="new-password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/></label>
+     <label>Nova senha<input type="password" required autoComplete="new-password" value={newPassword} onChange={e=>setNewPassword(e.target.value)}/></label>
+     <label>Confirmar nova senha<input type="password" required autoComplete="new-password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/></label>
      {message&&<p role="alert" className="luz-password-error">{message}</p>}
      <div className="luz-password-actions"><button type="button" onClick={onClose}>Cancelar</button><button type="submit" className="primary" disabled={saving}>{saving?'Salvando...':'Confirmar alteração'}</button></div>
    </form>
- </Modal>
+ </Modal></div>
 }
 
 function PatientModal({item,onClose,onSave}) {
