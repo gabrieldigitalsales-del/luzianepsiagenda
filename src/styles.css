@@ -686,3 +686,12 @@ body{background:#edf4f8}
 @media(max-width:520px){.luz-dialog-panel{padding:22px}.luz-dialog-buttons button{flex:1}}
 
 .luz-password-form{display:grid;gap:14px}.luz-password-form p{margin:0;color:#537283;font-size:13px}.luz-password-form input{width:100%}.luz-password-actions{display:flex;justify-content:flex-end;gap:10px}.luz-password-actions button{border-radius:0;padding:11px 16px;cursor:pointer}.luz-password-error{color:#b12233!important}
+
+/* Ajuste de escala em dispositivos móveis e formulário compacto de senha */
+html,body,#root{width:100%;max-width:100%;overflow-x:hidden}
+.luz-password-dialog .modal{width:min(92vw,410px);max-width:410px;max-height:min(86dvh,690px);overflow-y:auto;padding:22px}
+.luz-password-dialog .modal-head{margin-bottom:12px}
+.luz-password-dialog .luz-password-form{gap:10px}
+.luz-password-dialog .luz-password-form label{margin:0}
+.luz-password-dialog .luz-password-form input{min-height:40px;padding:9px 11px}
+@media(max-width:767px){.phone-app{width:100%;max-width:100vw}.topbar,.screen{max-width:100%}input,textarea,select{font-size:16px!important}.luz-password-dialog .modal{width:calc(100vw - 28px);padding:18px}}
