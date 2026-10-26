@@ -532,10 +532,43 @@ function FinanceScreen({appointments, patients, payments, packages, onEdit, onNe
 function FinanceCard({icon,label,value,hint}) { return <article className="finance-card"><div>{icon}</div><span>{label}</span><b>{value}</b><p>{hint}</p></article> }
 
 function SettingsScreen({settings, onSave, patients, appointments, pendingPayments}) {
+  const [passwordOpen,setPasswordOpen]=useState(false)
   const [form,setForm] = useState(settings); useEffect(()=>setForm(settings),[settings]); function update(k,v){ setForm({...form,[k]:v}) }
   function exportData(){ const blob = new Blob([JSON.stringify({patients,appointments,settings}, null, 2)], {type:'application/json'}); const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='backup-agenda-luziane.json'; a.click() }
-  return <main className="screen"><PageTitle kicker="CONFIGURAÇÕES" title="Ajustes" /><section className="settings-card"><h2>Resumo rápido</h2><div className="history-grid"><span><b>{patients.length}</b> pacientes</span><span><b>{appointments.length}</b> consultas</span><span><b>{pendingPayments.length}</b> pendentes</span><span><b>{appointments.filter(a=>a.recurrence_group_id).length}</b> recorrentes</span></div></section><section className="settings-card"><h2>Dados da Clínica</h2><label>Nome da clínica / profissional<input value={form.clinic_name||''} onChange={e=>update('clinic_name',e.target.value)} /></label><div className="two"><label>Horário de início<select value={form.start_time} onChange={e=>update('start_time',e.target.value)}>{timeOpts().map(t=><option key={t}>{t}</option>)}</select></label><label>Horário de término<select value={form.end_time} onChange={e=>update('end_time',e.target.value)}>{timeOpts().map(t=><option key={t}>{t}</option>)}</select></label></div><div className="two"><label>Duração padrão (min)<input type="number" min="0" step="1" placeholder="Ex: 50" value={form.default_duration ?? ''} onChange={e=>update('default_duration',e.target.value)} /></label><label>Valor padrão (R$)<input type="number" min="0" step="0.01" placeholder="Ex: 500" value={form.default_price ?? ''} onChange={e=>update('default_price',e.target.value)} /></label></div><button className="primary wide" onClick={()=>onSave(form)}><Save/> Salvar Configurações</button></section><section className="settings-card tools"><h2>Ferramentas</h2><button onClick={exportData}><Download/> Exportar backup</button><button onClick={()=>window.print()}><Printer/> Imprimir agenda</button></section></main>
+  return <main className="screen"><PageTitle kicker="CONFIGURAÇÕES" title="Ajustes" /><section className="settings-card"><h2>Resumo rápido</h2><div className="history-grid"><span><b>{patients.length}</b> pacientes</span><span><b>{appointments.length}</b> consultas</span><span><b>{pendingPayments.length}</b> pendentes</span><span><b>{appointments.filter(a=>a.recurrence_group_id).length}</b> recorrentes</span></div></section><section className="settings-card"><h2>Dados da Clínica</h2><label>Nome da clínica / profissional<input value={form.clinic_name||''} onChange={e=>update('clinic_name',e.target.value)} /></label><div className="two"><label>Horário de início<select value={form.start_time} onChange={e=>update('start_time',e.target.value)}>{timeOpts().map(t=><option key={t}>{t}</option>)}</select></label><label>Horário de término<select value={form.end_time} onChange={e=>update('end_time',e.target.value)}>{timeOpts().map(t=><option key={t}>{t}</option>)}</select></label></div><div className="two"><label>Duração padrão (min)<input type="number" min="0" step="1" placeholder="Ex: 50" value={form.default_duration ?? ''} onChange={e=>update('default_duration',e.target.value)} /></label><label>Valor padrão (R$)<input type="number" min="0" step="0.01" placeholder="Ex: 500" value={form.default_price ?? ''} onChange={e=>update('default_price',e.target.value)} /></label></div><button className="primary wide" onClick={()=>onSave(form)}><Save/> Salvar Configurações</button></section><section className="settings-card"><h2>Segurança da conta</h2><p>Atualize sua senha de acesso à agenda.</p><button className="primary" onClick={()=>setPasswordOpen(true)}>Alterar senha</button></section>{passwordOpen&&<ChangePasswordModal onClose={()=>setPasswordOpen(false)}/>}<section className="settings-card tools"><h2>Ferramentas</h2><button onClick={exportData}><Download/> Exportar backup</button><button onClick={()=>window.print()}><Printer/> Imprimir agenda</button></section></main>
 }
+
+function ChangePasswordModal({onClose}){
+ const [currentPassword,setCurrentPassword]=useState('')
+ const [newPassword,setNewPassword]=useState('')
+ const [confirmPassword,setConfirmPassword]=useState('')
+ const [message,setMessage]=useState('')
+ const [saving,setSaving]=useState(false)
+ async function submit(e){
+   e.preventDefault();setMessage('')
+   if(newPassword.length<8){setMessage('A nova senha precisa ter pelo menos 8 caracteres.');return}
+   if(newPassword!==confirmPassword){setMessage('As senhas informadas não coincidem.');return}
+   setSaving(true)
+   try{
+    const res=await fetch('/api/change-password',{method:'POST',credentials:'include',headers:{'content-type':'application/json'},body:JSON.stringify({currentPassword,newPassword,confirmPassword})})
+    const result=await res.json()
+    if(!res.ok){setMessage(result.error||'Não foi possível alterar a senha.');return}
+    onClose();await alert('Senha alterada com sucesso.')
+   }catch(e){setMessage('Não foi possível conectar ao servidor.')}
+   finally{setSaving(false)}
+ }
+ return <Modal title="Alterar senha de acesso" onClose={onClose}>
+   <form className="luz-password-form" onSubmit={submit}>
+     <p>Confirme sua senha atual para proteger o acesso à agenda.</p>
+     <label>Senha atual<input type="password" required autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>
+     <label>Nova senha<input type="password" required minLength={8} autoComplete="new-password" value={newPassword} onChange={e=>setNewPassword(e.target.value)}/></label>
+     <label>Confirmar nova senha<input type="password" required minLength={8} autoComplete="new-password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)}/></label>
+     {message&&<p role="alert" className="luz-password-error">{message}</p>}
+     <div className="luz-password-actions"><button type="button" onClick={onClose}>Cancelar</button><button type="submit" className="primary" disabled={saving}>{saving?'Salvando...':'Confirmar alteração'}</button></div>
+   </form>
+ </Modal>
+}
+
 function PatientModal({item,onClose,onSave}) {
   const [f,setF]=useState(item || {full_name:'',phone:'',birth_date:'',cpf:'',mother_name:'',father_name:'',mother_phone:'',father_phone:'',guardian_name:'',education:'',school_name:'',school_type:'',school_grade:'',referred_by:'',email:'',notes:'',status:'ativo'})
   const u=(k,v)=>setF(old=>({...old,[k]:v}))
