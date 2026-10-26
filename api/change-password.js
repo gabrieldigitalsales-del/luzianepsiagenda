@@ -4,7 +4,7 @@ export default async function handler(req,res){
  if(req.method!=='POST')return json(res,405,{error:'Método não permitido'})
  if(!authenticated(req))return json(res,401,{error:'Sessão expirada. Entre novamente.'})
  const {currentPassword,newPassword,confirmPassword}=req.body||{}
- if(typeof newPassword!=='string'||newPassword.length<8||newPassword.length>128)return json(res,400,{error:'Use uma senha com pelo menos 8 caracteres.'})
+ if(typeof newPassword!=='string'||newPassword.length===0)return json(res,400,{error:'Informe uma nova senha.'})
  if(newPassword!==confirmPassword)return json(res,400,{error:'A confirmação da senha está diferente.'})
  try{
  if(!await verifyPassword(currentPassword))return json(res,403,{error:'A senha atual está incorreta.'})
