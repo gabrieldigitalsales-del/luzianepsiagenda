@@ -8,11 +8,14 @@ if(depth!==8||![2,6].includes(type))throw Error('Formato PNG inesperado da logo'
 const bpp=type===2?3:4,raw=inflateSync(Buffer.concat(parts)),stride=width*bpp,pixels=Buffer.alloc(height*stride)
 let src=0
 for(let y=0;y<height;y++){const filter=raw[src++];for(let x=0;x<stride;x++){const value=raw[src++],a=x>=bpp?pixels[y*stride+x-bpp]:0,b=y?pixels[(y-1)*stride+x]:0,c=y&&x>=bpp?pixels[(y-1)*stride+x-bpp]:0;let p=0;if(filter===1)p=a;else if(filter===2)p=b;else if(filter===3)p=(a+b)>>1;else if(filter===4){const q=a+b-c,da=Math.abs(q-a),db=Math.abs(q-b),dc=Math.abs(q-c);p=da<=db&&da<=dc?a:db<=dc?b:c;}else if(filter!==0)throw Error('Filtro PNG desconhecido');pixels[y*stride+x]=(value+p)&255}}
-const dim=180,output=Buffer.alloc((dim*3+1)*dim,255),targetW=112,targetH=Math.round(height*targetW/width),offX=Math.floor((dim-targetW)/2),offY=Math.floor((dim-targetH)/2)
-for(let y=0;y<dim;y++)output[y*(dim*3+1)]=0
+const dim=180,output=Buffer.alloc((dim*3+1)*dim),bg=[8,153,172];
+for(let y=0;y<dim;y++){const off=y*(dim*3+1);output[off]=0;for(let x=0;x<dim;x++)for(let k=0;k<3;k++)output[off+1+x*3+k]=bg[k];}
+// Apenas o símbolo do cérebro: exclui o nome da clínica na metade inferior.
+// Recorte original: x=119..468, y=20..298. A marca ocupa quase todo o ícone.
+const crop={x:115,y:19,w:355,h:284},targetW=174,targetH=Math.round(crop.h*targetW/crop.w),offX=Math.floor((dim-targetW)/2),offY=Math.floor((dim-targetH)/2);
 for(let y=0;y<targetH;y++)for(let x=0;x<targetW;x++){
- const sx=Math.min(width-1,Math.floor(x*width/targetW)),sy=Math.min(height-1,Math.floor(y*height/targetH)),si=sy*stride+sx*bpp,di=(offY+y)*(dim*3+1)+1+(offX+x)*3,alpha=bpp===4?pixels[si+3]/255:1
- for(let k=0;k<3;k++)output[di+k]=Math.round(pixels[si+k]*alpha+255*(1-alpha))
+ const sx=Math.min(width-1,crop.x+Math.floor(x*crop.w/targetW)),sy=Math.min(height-1,crop.y+Math.floor(y*crop.h/targetH)),si=sy*stride+sx*bpp,di=(offY+y)*(dim*3+1)+1+(offX+x)*3,alpha=bpp===4?pixels[si+3]/255:1
+ for(let k=0;k<3;k++)output[di+k]=Math.round(pixels[si+k]*alpha+bg[k]*(1-alpha))
 }
 const table=Array.from({length:256},(_,i)=>{let c=i;for(let j=0;j<8;j++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;return c>>>0})
 const crc=b=>{let c=0xffffffff;for(const v of b)c=table[(c^v)&255]^(c>>>8);return(c^0xffffffff)>>>0}
