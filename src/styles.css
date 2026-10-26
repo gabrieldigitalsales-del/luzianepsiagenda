@@ -671,3 +671,16 @@ body{background:#edf4f8}
 .ledger-payment-history{padding-top:12px;border-top:1px solid #dbe7ed}
 .ledger-payment-history h4{margin:6px 0 12px}
 @media(max-width:640px){.patient-ledger-values{gap:5px}.patient-ledger-values>div{padding:10px 7px}.patient-ledger-values small{font-size:9px}.ledger-line{grid-template-columns:1fr 1fr;gap:8px}.ledger-line span,.ledger-line strong{text-align:left}.ledger-line .payment-history-actions{justify-content:flex-end}.financial-filter-row label{min-width:130px}}
+
+/* Janelas personalizadas — padrão Agenda Luziane */
+.luz-dialog-host{position:relative;z-index:100000}
+.luz-dialog-backdrop{position:fixed;inset:0;z-index:100000;background:rgba(10,36,50,.58);display:flex;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(4px)}
+.luz-dialog-panel{background:#fff;color:#153344;width:min(100%,450px);border:1px solid #c9e5ee;border-radius:0;box-shadow:0 28px 75px #00192544;padding:28px;font-family:Arial,system-ui,sans-serif}
+.luz-dialog-mark{background:#e9f8fc;color:#1395b7;width:46px;height:46px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.luz-dialog-panel h2{font-size:21px;line-height:1.3;margin:0 0 10px;font-weight:700;color:#153344}
+.luz-dialog-panel p{white-space:pre-line;overflow-wrap:anywhere;font-size:14px;line-height:1.65;color:#4e6470;margin:0 0 22px}
+.luz-dialog-panel input{width:100%;border:1px solid #bbd9e3;border-radius:0;padding:13px;margin:0 0 22px;outline-color:#159fc2;background:white;color:#153344}
+.luz-dialog-buttons{display:flex;justify-content:flex-end;gap:10px}
+.luz-dialog-buttons button{border-radius:0;border:1px solid #bfd5dd;background:white;color:#2c5565;padding:11px 18px;font-weight:700;cursor:pointer}
+.luz-dialog-buttons .luz-dialog-primary{background:#0799bd;color:#fff;border-color:#0799bd}
+@media(max-width:520px){.luz-dialog-panel{padding:22px}.luz-dialog-buttons button{flex:1}}
